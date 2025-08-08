@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, serial, integer } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, pgEnum } from "drizzle-orm/pg-core";
 
 export const courses = pgTable("courses", {
   id: serial("id").primaryKey(),
@@ -9,7 +9,58 @@ export const courses = pgTable("courses", {
 
 export const coursesRelations = relations(courses, ({ many }) => ({
   userProgress: many(userProgress),
+  units: many(units),
 }));
+
+export const units = pgTable("units", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  courseId: integer("course_id")
+    .references(() => courses.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
+  order: integer("order").notNull(),
+});
+
+export const unitsRelations = relations(units, ({ many, one }) => ({
+  course: one(courses, {
+    fields: [units.courseId],
+    references: [courses.id],
+  }),
+
+  lessons: many(lessons),
+}));
+
+export const lessons = pgTable("lessons", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  unitId: integer("unit_id")
+    .references(() => units.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
+  order: integer("order").notNull(),
+});
+
+export const lessonsRelations = relations(lessons, ({ one, many }) => ({
+  unit: one(units, {
+    fields: [lessons.unitId],
+    references: [units.id],
+  }),
+}));
+
+export const challengesEnum = pgEnum("type", ["SELECT", "ASSIST"]);
+
+export const challenges = pgTable("challenges", {
+  id: serial("id").primaryKey(),
+  lessonId: integer("lesson_id")
+    .references(() => lessons.id, { onDelete: "cascade" })
+    .notNull(),
+  type: challengesEnum("type").notNull(),
+  question: text("question").notNull(),
+});
 
 export const userProgress = pgTable("user_progress", {
   userId: text("user_id").primaryKey(),
