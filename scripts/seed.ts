@@ -66,7 +66,7 @@ const main = async () => {
       {
         id: 1,
         challengeId: 1,
-        imageSrc: "/es.svg",
+        imageSrc: "/man.png",
         text: "el hombre",
         correct: true,
         audioSrc: "/es_man.mp3",
@@ -74,7 +74,7 @@ const main = async () => {
       {
         id: 2,
         challengeId: 1,
-        imageSrc: "/wpman.svg",
+        imageSrc: "/woman.png",
         text: "la mujer",
         correct: false,
         audioSrc: "/es_woman.mp3",
@@ -82,7 +82,7 @@ const main = async () => {
       {
         id: 3,
         challengeId: 1,
-        imageSrc: "/robot.svg",
+        imageSrc: "/robot.png",
         text: "el robot",
         correct: false,
         audioSrc: "/es_robot.mp3",
