@@ -170,7 +170,7 @@ export const getLesson = cache(async (id?: number) => {
 export const getLessonPercentage = cache(async () => {
   const courseProgress = await getCourseProgress();
 
-  if (!courseProgress || courseProgress?.activeLessonId) return 0;
+  if (!courseProgress || !courseProgress?.activeLessonId) return 0;
 
   const lesson = await getLesson(courseProgress.activeLessonId);
   if (!lesson) return 0;
