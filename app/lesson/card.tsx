@@ -29,14 +29,17 @@ export const Card = ({
   status,
   type,
 }: Props) => {
-  const [audio, _, controls] = useAudio({ src: audioSrc || "" });
+  const [audio, _, controls] = useAudio({ src: (audioSrc || null) as any });
 
   const handleClick = useCallback(() => {
     if (disabled) return;
 
-    controls.play();
+    if (audioSrc) {
+      controls.play();
+    }
+
     onClick();
-  }, [disabled, onClick, controls]);
+  }, [disabled, onClick, controls, audioSrc]);
 
   useKey(shortcut, handleClick, {}, [handleClick]);
   return (
