@@ -85,7 +85,7 @@ const Quiz = ({
         upsertChallengeProgress(challenge.id)
           .then((response) => {
             if (response?.error === "hearts") {
-              openHeartsModal();
+              openHeartsModal(lastHeartAt);
               return;
             }
 
@@ -104,7 +104,7 @@ const Quiz = ({
         reduceHearts(challenge.id)
           .then((response) => {
             if (response?.error === "hearts") {
-              openHeartsModal();
+              openHeartsModal(lastHeartAt);
               return;
             }
 

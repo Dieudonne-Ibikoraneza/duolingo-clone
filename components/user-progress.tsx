@@ -10,6 +10,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type Props = {
@@ -29,6 +30,7 @@ export const UserProgress = ({
   hasActiveSubscription,
   lastHeartAt,
 }: Props) => {
+  const router = useRouter();
   const [countdown, setCountdown] = useState("");
 
   useEffect(() => {
@@ -42,8 +44,9 @@ export const UserProgress = ({
       const remaining = nextHeartAt.getTime() - Date.now();
 
       if (remaining <= 0) {
-        setCountdown("Regenerating...");
-        // In a real app, you might want to trigger a revalidation here
+        setCountdown("");
+        clearInterval(interval);
+        router.refresh();
         return;
       }
 
@@ -53,7 +56,7 @@ export const UserProgress = ({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [hearts, lastHeartAt, hasActiveSubscription]);
+  }, [hearts, lastHeartAt, hasActiveSubscription, router]);
 
   return (
     <div className="flex items-center justify-between gap-x-2 w-full">

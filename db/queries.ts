@@ -32,9 +32,19 @@ export const getUserProgress = cache(async () => {
 
     if (regeneratedHearts > 0) {
       const newHearts = Math.min(5, data.hearts + regeneratedHearts);
+      const newLastHeartAt = newHearts === 5 
+        ? null 
+        : new Date(new Date(data.lastHeartAt).getTime() + regeneratedHearts * twentyMinutes);
+
+      await db.update(userProgress).set({
+        hearts: newHearts,
+        lastHeartAt: newLastHeartAt,
+      }).where(eq(userProgress.userId, userId));
+
       return {
         ...data,
         hearts: newHearts,
+        lastHeartAt: newLastHeartAt,
       };
     }
   }

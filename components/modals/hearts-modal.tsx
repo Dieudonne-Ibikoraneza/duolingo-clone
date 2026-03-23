@@ -14,12 +14,42 @@ import {
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
+const REGENERATION_INTERVAL = 20 * 60 * 1000;
+
 export const HeartsModal = () => {
     const router = useRouter();
     const [isClient, setIsClient] = useState(false);
-    const { isOpen, close } = useHeartsModal();
+    const { isOpen, close, lastHeartAt } = useHeartsModal();
+    const [countdown, setCountdown] = useState("");
   
-    useEffect(() => setIsClient(true), []);
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    useEffect(() => {
+        if (!isOpen || !lastHeartAt) {
+            setCountdown("");
+            return;
+        }
+
+        const interval = setInterval(() => {
+            const nextHeartAt = new Date(new Date(lastHeartAt).getTime() + REGENERATION_INTERVAL);
+            const remaining = nextHeartAt.getTime() - Date.now();
+
+            if (remaining <= 0) {
+                setCountdown("");
+                clearInterval(interval);
+                router.refresh();
+                return;
+            }
+
+            const minutes = Math.floor(remaining / 60000);
+            const seconds = Math.floor((remaining % 60000) / 1000);
+            setCountdown(`${minutes}:${seconds < 10 ? "0" : ""}${seconds}`);
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [isOpen, lastHeartAt]);
   
     if (!isClient) return null;
 
@@ -39,7 +69,12 @@ export const HeartsModal = () => {
                         You&apos;re out of hearts!
                     </DialogTitle>
                     <DialogDescription className="text-center text-base">
-                        Get unlimited hearts to stay motivated and avoid mistakes holding you back.
+                        Get unlimited hearts to stay motivated.
+                        {countdown && (
+                            <span className="block mt-2 font-bold text-rose-500">
+                                Next heart in: {countdown}
+                            </span>
+                        )}
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter className="mb-4">

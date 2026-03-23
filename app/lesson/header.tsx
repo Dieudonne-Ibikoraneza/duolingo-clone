@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 type Props = {
   hearts: number;
@@ -27,6 +28,7 @@ export const Header = ({
   lastHeartAt,
 }: Props) => {
   const { open } = useExitModal();
+  const router = useRouter();
   const [countdown, setCountdown] = useState("");
 
   useEffect(() => {
@@ -40,7 +42,9 @@ export const Header = ({
       const remaining = nextHeartAt.getTime() - Date.now();
 
       if (remaining <= 0) {
-        setCountdown("Regenerating...");
+        setCountdown("");
+        clearInterval(interval);
+        router.refresh();
         return;
       }
 
@@ -50,7 +54,7 @@ export const Header = ({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [hearts, lastHeartAt, hasActiveSubscription]);
+  }, [hearts, lastHeartAt, hasActiveSubscription, router]);
 
   return (
     <header className="lg:pt-[50px] pt-[20px] px-10 flex gap-x-7 items-center justify-between max-w-[1140px] mx-auto w-full">
@@ -85,7 +89,7 @@ export const Header = ({
                   {hearts >= 5 ? "Hearts are full!" : "Regenerating..."}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {hearts >= 5
+                  {hearts >= 5 
                     ? "Keep up the great work! You have all your hearts."
                     : `Next heart in ${countdown || "20:00"}`
                   }
