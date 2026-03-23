@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lingo - A Beautiful Duolingo Clone
 
-## Getting Started
+Lingo is a feature-rich, gamified language learning platform built with modern web technologies. It provides an engaging and interactive experience for mastering new languages through a series of structured lessons, challenges, and competitive leaderboards.
 
-First, run the development server:
+![Landing Page](./public/landing.png)
 
+## 🌟 Features
+
+### 🎮 Gamified Learning
+- **Heart System**: Manage your mistakes with a replenishing heart system. Lose hearts for wrong answers, and earn them back over time or through the shop.
+- **Experience Points (XP)**: Earn points for every successful challenge and lesson completion.
+- **Daily Streaks**: Stay consistent with a streak system that tracks your consecutive learning days. 🔥
+- **Quests**: Reach point milestones to complete daily quests. 🎯
+
+### 🌍 Diverse Courses
+- Learn **Spanish**, **French**, **Italian**, or **Croatian**.
+- Each course features multiple units and categorized lessons (Nouns, Verbs, Greetings, etc.).
+
+### 🏆 Competition
+- **Leaderboard**: See how you rank against other learners in the global top 10.
+- **Active Community**: View other learners' progress and images.
+
+### 💎 Shop
+- Use your earned points to refill your hearts.
+- Placeholder for "Unlimited Hearts" (Pro feature simulation).
+
+---
+
+## 🚀 Quick Setup
+
+### 1. Prerequisites
+- **Node.js** (v18 or later)
+- **PostgreSQL** (Neon.tech recommended)
+- **Clerk Account** (for authentication)
+
+### 2. Installation
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Environment Variables
+Create a `.env.local` file in the root directory:
+```env
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=...
+CLERK_SECRET_KEY=...
+DATABASE_URL=...
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Database Setup
+```bash
+npx drizzle-kit push
+npm run db:seed
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 5. Start the App
+```bash
+npm run dev
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠️ Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Framework**: [Next.js 14](https://nextjs.org/) (App Router, Server Actions)
+- **Database**: [PostgreSQL](https://www.postgresql.org/) with [Drizzle ORM](https://orm.drizzle.team/)
+- **Auth**: [Clerk](https://clerk.com/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Components**: [shadcn/ui](https://ui.shadcn.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/) & [Canvas-Confetti](https://www.npmjs.com/package/canvas-confetti)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📸 Application Preview
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Course Selection
+Choose from a variety of languages with beautiful, high-quality illustrations.
+![Courses Page](./public/courses.png)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Engaging Lessons
+Interactive select and assist challenges with real-time feedback and mascot guidance.
+
+---
+
+## 🙌 Credits
+Designed and developed with a focus on visual excellence and premium user experience.
