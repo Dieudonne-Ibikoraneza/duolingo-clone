@@ -37,6 +37,7 @@ const page = async () => {
           hearts={userProgress.hearts}
           points={userProgress.points}
           hasActiveSubscription={false}
+          lastHeartAt={userProgress.lastHeartAt}
         />
       </StickyWrapper>
       <FeedWrapper>
@@ -51,6 +52,7 @@ const page = async () => {
               lessons={unit.lessons}
               activeLesson={courseProgress.activeLesson}
               activeLessonPercentage={lessonPercentage}
+              hearts={userProgress.hearts}
               lastHeartAt={userProgress.lastHeartAt}
             />
           </div>

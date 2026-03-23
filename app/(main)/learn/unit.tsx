@@ -14,6 +14,8 @@ type Props = {
       })
     | undefined;
   activeLessonPercentage: number;
+  hearts: number;
+  lastHeartAt: Date | null | undefined;
 };
 
 export const Unit = ({
@@ -24,6 +26,8 @@ export const Unit = ({
   lessons,
   activeLesson,
   activeLessonPercentage,
+  hearts,
+  lastHeartAt,
 }: Props) => {
   return (
     <>
@@ -42,6 +46,8 @@ export const Unit = ({
               current={isCurrent}
               locked={isLocked}
               percentage={activeLessonPercentage}
+              hearts={hearts}
+              lastHeartAt={lastHeartAt}
             />
           );
         })}

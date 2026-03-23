@@ -11,13 +11,19 @@ type Props = {
   completed?: boolean;
   percentage: number;
   current?: boolean;
+  hearts: number;
+  lastHeartAt: Date | null | undefined;
 };
+
+const REGENERATION_INTERVAL = 20 * 60 * 1000;
 
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const LessonButton = ({
   id,
@@ -27,7 +33,46 @@ export const LessonButton = ({
   current,
   completed,
   percentage,
+  hearts,
+  lastHeartAt,
 }: Props) => {
+  const router = useRouter();
+  const [countdown, setCountdown] = useState("");
+  const [animateHearts, setAnimateHearts] = useState(false);
+  const prevHeartsRef = useRef(hearts);
+
+  useEffect(() => {
+    if (hearts > prevHeartsRef.current) {
+        setAnimateHearts(true);
+        setTimeout(() => setAnimateHearts(false), 500);
+    }
+    prevHeartsRef.current = hearts;
+  }, [hearts]);
+
+  useEffect(() => {
+    if (hearts >= 5 || !lastHeartAt) {
+      setCountdown("");
+      return;
+    }
+
+    const interval = setInterval(() => {
+      const nextHeartAt = new Date(new Date(lastHeartAt).getTime() + REGENERATION_INTERVAL);
+      const remaining = nextHeartAt.getTime() - Date.now();
+
+      if (remaining <= 0) {
+        setCountdown("");
+        clearInterval(interval);
+        router.refresh();
+        return;
+      }
+
+      const minutes = Math.floor(remaining / 60000);
+      const seconds = Math.floor((remaining % 60000) / 1000);
+      setCountdown(`${minutes}:${seconds < 10 ? "0" : ""}${seconds}`);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [hearts, lastHeartAt, router]);
   const cycleLength = 8;
   const cycleIndex = index % cycleLength;
   let indentationLevel;
@@ -61,8 +106,11 @@ export const LessonButton = ({
       >
         {current ? (
           <div className="h-[102px] w-[102px] relative">
-            <div className="absolute -top-6 left-2.5 px-3 py-2.5 border-2 font-bold uppercase text-green-500 bg-white rounded-xl animate-bounce tracking-wide z-10">
-              Start
+            <div className={cn(
+              "absolute -top-6 left-2.5 px-3 py-2.5 border-2 font-bold uppercase text-green-500 bg-white rounded-xl animate-bounce tracking-wide z-10",
+              animateHearts && "animate-heart-boost"
+            )}>
+              {hearts === 0 && countdown ? countdown : "Start"}
               <div className="absolute left-1/2 -bottom-2 w-0 h-0 border-x-8 border-x-transparent border-t-8 transform -translate-x-1/2" />
             </div>
             <CircularProgressbarWithChildren
