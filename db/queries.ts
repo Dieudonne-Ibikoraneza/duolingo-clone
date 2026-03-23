@@ -1,6 +1,8 @@
 import { cache } from "react";
 import db from "@/db/drizzle";
-import { asc, eq } from "drizzle-orm";
+import { asc, desc, eq } from "drizzle-orm";
+
+
 import {
   challengeProgress,
   courses,
@@ -212,4 +214,22 @@ export const getLessonPercentage = cache(async () => {
   );
 
   return percentage;
+});
+
+export const getTopTenUsers = cache(async () => {
+  const { userId } = await auth();
+  if (!userId) return [];
+
+  const data = await db.query.userProgress.findMany({
+    orderBy: [desc(userProgress.points)],
+    limit: 10,
+    columns: {
+        userId: true,
+        userName: true,
+        userImageSrc: true,
+        points: true,
+    }
+  });
+
+  return data;
 });
