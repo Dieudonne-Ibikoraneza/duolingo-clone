@@ -51,6 +51,7 @@ const page = async () => {
               lessons={unit.lessons}
               activeLesson={courseProgress.activeLesson}
               activeLessonPercentage={lessonPercentage}
+              lastHeartAt={userProgress.lastHeartAt}
             />
           </div>
         ))}

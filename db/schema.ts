@@ -6,6 +6,7 @@ import {
   integer,
   pgEnum,
   boolean,
+  timestamp,
 } from "drizzle-orm/pg-core";
 
 export const courses = pgTable("courses", {
@@ -133,6 +134,7 @@ export const userProgress = pgTable("user_progress", {
   }),
   hearts: integer("hearts").notNull().default(5),
   points: integer("points").notNull().default(0),
+  lastHeartAt: timestamp("last_heart_at"),
 });
 
 export const userProgressRelations = relations(userProgress, ({ one }) => ({

@@ -9,10 +9,12 @@ type Props = {
     challengeOptions: (typeof challengeOptions.$inferSelect)[];
   })[];
   userSubscription: any;
+  lastHeartAt: Date | null | undefined;
 };
 
 import { challengeOptions, challenges } from "@/db/schema";
-import React, { useState } from "react";
+import { useHeartsModal } from "@/store/use-hearts-modal";
+import React, { useState, useTransition } from "react";
 import { Header } from "./header";
 import { QuestionBubble } from "./question-bubble";
 import { Challenge } from "./challenge";
@@ -20,7 +22,6 @@ import { Footer } from "./footer";
 import { upsertChallengeProgress } from "@/actions/challenge-progress";
 import { reduceHearts } from "@/actions/user-progress";
 import { toast } from "sonner";
-import { useTransition } from "react";
 import { Button } from "@/components/ui/button";
 
 const Quiz = ({
@@ -29,7 +30,9 @@ const Quiz = ({
   initialLessonId,
   initialLessonChallenges,
   userSubscription,
+  lastHeartAt,
 }: Props) => {
+  const { open: openHeartsModal } = useHeartsModal();
   const [hearts, setHearts] = useState(initialHearts);
   const [percentage, setPercentage] = useState(initialPercentage);
   const [challenges, setChallenges] = useState(initialLessonChallenges);
@@ -82,7 +85,7 @@ const Quiz = ({
         upsertChallengeProgress(challenge.id)
           .then((response) => {
             if (response?.error === "hearts") {
-              // TODO: Open hearts modal
+              openHeartsModal();
               return;
             }
 
@@ -101,7 +104,7 @@ const Quiz = ({
         reduceHearts(challenge.id)
           .then((response) => {
             if (response?.error === "hearts") {
-              // TODO: Open hearts modal
+              openHeartsModal();
               return;
             }
 
@@ -144,6 +147,7 @@ const Quiz = ({
         hearts={hearts}
         percentage={percentage}
         hasActiveSubscription={!!userSubscription?.isActive}
+        lastHeartAt={lastHeartAt}
       />
       <div className="flex-1">
         <div className="flex items-center h-full justify-center">

@@ -21,6 +21,24 @@ export const getUserProgress = cache(async () => {
       activeCourse: true,
     },
   });
+
+  if (!data) return null;
+
+  // Heart regeneration logic
+  if (data.hearts < 5 && data.lastHeartAt) {
+    const twentyMinutes = 20 * 60 * 1000;
+    const elapsed = Date.now() - new Date(data.lastHeartAt).getTime();
+    const regeneratedHearts = Math.floor(elapsed / twentyMinutes);
+
+    if (regeneratedHearts > 0) {
+      const newHearts = Math.min(5, data.hearts + regeneratedHearts);
+      return {
+        ...data,
+        hearts: newHearts,
+      };
+    }
+  }
+
   return data;
 });
 

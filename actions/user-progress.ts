@@ -88,6 +88,7 @@ export const reduceHearts = async (challengeId: number) => {
     .update(userProgress)
     .set({
       hearts: Math.max(currentUserProgress.hearts - 1, 0),
+      lastHeartAt: new Date(),
     })
     .where(eq(userProgress.userId, userId));
 

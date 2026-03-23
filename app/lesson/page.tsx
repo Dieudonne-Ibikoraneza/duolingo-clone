@@ -16,7 +16,7 @@ const page = async () => {
   const initialPercentage =
     (lesson.challenges.filter((challenge) => challenge.completed).length /
       lesson.challenges.length) *
-    100;
+      100 || 0;
 
   return (
     <Quiz
@@ -25,6 +25,7 @@ const page = async () => {
       initialHearts={userProgress.hearts}
       initialPercentage={initialPercentage}
       userSubscription={null}
+      lastHeartAt={userProgress.lastHeartAt}
     />
   );
 };

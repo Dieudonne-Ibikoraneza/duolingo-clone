@@ -60,9 +60,21 @@ const main = async () => {
       // Lesson 2 - Verbs
       { id: 4, lessonId: 2, type: "SELECT", order: 1, question: 'Which one of these is "I eat"?' },
       { id: 5, lessonId: 2, type: "ASSIST", order: 2, question: "He eats" },
+      // Lesson 3 - Adjectives
+      { id: 8, lessonId: 3, type: "SELECT", order: 1, question: 'Which one of these is "the big house"?' },
+      { id: 9, lessonId: 3, type: "ASSIST", order: 2, question: "the big house" },
+      // Lesson 4 - Pronouns
+      { id: 10, lessonId: 4, type: "SELECT", order: 1, question: 'Which one of these is "Yo"?' },
+      { id: 11, lessonId: 4, type: "ASSIST", order: 2, question: "I, You, He" },
+      // Lesson 5 - Prepositions
+      { id: 12, lessonId: 5, type: "SELECT", order: 1, question: 'Which one of these is "in"?' },
+      { id: 13, lessonId: 5, type: "ASSIST", order: 2, question: "in, on, under" },
       // Lesson 6 - Greetings
       { id: 6, lessonId: 6, type: "SELECT", order: 1, question: 'Which one of these is "Hello"?' },
       { id: 7, lessonId: 6, type: "ASSIST", order: 2, question: "Goodbye" },
+      // Lesson 7 - Numbers
+      { id: 14, lessonId: 7, type: "SELECT", order: 1, question: 'Which one of these is "Uno"?' },
+      { id: 15, lessonId: 7, type: "ASSIST", order: 2, question: "one, two, three" },
     ]);
 
     await db.insert(schema.challengeOptions).values([
@@ -79,21 +91,46 @@ const main = async () => {
       { id: 8, challengeId: 3, text: "la mujer", correct: false, audioSrc: "/es_woman.mp3" },
       { id: 9, challengeId: 3, text: "el robot", correct: false, audioSrc: "/es_robot.mp3" },
       // Challenge 4 (I eat)
-      { id: 10, challengeId: 4, text: "Yo como", correct: true },
-      { id: 11, challengeId: 4, text: "Él come", correct: false },
-      { id: 12, challengeId: 4, text: "Tú comes", correct: false },
+      { id: 10, challengeId: 4, text: "Yo como", correct: true, audioSrc: "/es_yo_como.mp3" },
+      { id: 11, challengeId: 4, text: "Él come", correct: false, audioSrc: "/es_el_come.mp3" },
+      { id: 12, challengeId: 4, text: "Tú comes", correct: false, audioSrc: "/es_tu_comes.mp3" },
       // Challenge 5 (He eats)
-      { id: 13, challengeId: 5, text: "Él come", correct: true },
-      { id: 14, challengeId: 5, text: "Yo como", correct: false },
-      { id: 15, challengeId: 5, text: "Tú comes", correct: false },
+      { id: 13, challengeId: 5, text: "Él come", correct: true, audioSrc: "/es_el_come.mp3" },
+      { id: 14, challengeId: 5, text: "Yo como", correct: false, audioSrc: "/es_yo_como.mp3" },
+      { id: 15, challengeId: 5, text: "Tú comes", correct: false, audioSrc: "/es_tu_comes.mp3" },
+      // Challenge 8 (the big house)
+      { id: 22, challengeId: 8, text: "La casa grande", correct: true, audioSrc: "/es_casa_grande.mp3" },
+      { id: 23, challengeId: 8, text: "La casa pequeña", correct: false, audioSrc: "/es_casa_pequena.mp3" },
+      { id: 24, challengeId: 8, text: "El perro grande", correct: false, audioSrc: "/es_perro_grande.mp3" },
+      // Challenge 9 (the big house - assist)
+      { id: 25, challengeId: 9, text: "La casa grande", correct: true, audioSrc: "/es_casa_grande.mp3" },
+      { id: 26, challengeId: 9, text: "El gato azul", correct: false, audioSrc: "/es_gato_azul.mp3" },
+      // Challenge 10 (Yo)
+      { id: 27, challengeId: 10, text: "Yo", correct: true, audioSrc: "/es_yo.mp3" },
+      { id: 28, challengeId: 10, text: "Nosotros", correct: false, audioSrc: "/es_nosotros.mp3" },
+      // Challenge 11 (I, You, He)
+      { id: 29, challengeId: 11, text: "Yo, Tú, Él", correct: true, audioSrc: null },
+      { id: 30, challengeId: 11, text: "Ellos, Ellas", correct: false, audioSrc: null },
+      // Challenge 12 (in)
+      { id: 31, challengeId: 12, text: "En", correct: true, audioSrc: null },
+      { id: 32, challengeId: 12, text: "Por", correct: false, audioSrc: null },
+      // Challenge 13 (in, on, under)
+      { id: 33, challengeId: 13, text: "En, Sobre, Debajo", correct: true, audioSrc: null },
+      { id: 34, challengeId: 13, text: "Arriba, Abajo", correct: false, audioSrc: null },
       // Challenge 6 (Hello)
-      { id: 16, challengeId: 6, text: "Hola", correct: true },
-      { id: 17, challengeId: 6, text: "Adiós", correct: false },
-      { id: 18, challengeId: 6, text: "Gracias", correct: false },
+      { id: 16, challengeId: 6, text: "Hola", correct: true, audioSrc: null },
+      { id: 17, challengeId: 6, text: "Adiós", correct: false, audioSrc: "/es_adios.mp3" },
+      { id: 18, challengeId: 6, text: "Gracias", correct: false, audioSrc: "/es_gracias.mp3" },
       // Challenge 7 (Goodbye)
-      { id: 19, challengeId: 7, text: "Adiós", correct: true },
-      { id: 20, challengeId: 7, text: "Hola", correct: false },
-      { id: 21, challengeId: 7, text: "Gracias", correct: false },
+      { id: 19, challengeId: 7, text: "Adiós", correct: true, audioSrc: "/es_adios.mp3" },
+      { id: 20, challengeId: 7, text: "Hola", correct: false, audioSrc: null },
+      { id: 21, challengeId: 7, text: "Gracias", correct: false, audioSrc: "/es_gracias.mp3" },
+      // Challenge 14 (Uno)
+      { id: 35, challengeId: 14, text: "Uno", correct: true, audioSrc: "/es_uno.mp3" },
+      { id: 36, challengeId: 14, text: "Diez", correct: false, audioSrc: "/es_diez.mp3" },
+      // Challenge 15 (one, two, three)
+      { id: 37, challengeId: 15, text: "Uno, Dos, Tres", correct: true, audioSrc: "/es_numbers_1.mp3" },
+      { id: 38, challengeId: 15, text: "Cuatro, Cinco", correct: false, audioSrc: "/es_numbers_2.mp3" },
     ]);
 
     console.log("Seeding finished successfully!");
