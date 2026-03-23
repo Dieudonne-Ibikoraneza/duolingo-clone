@@ -10,8 +10,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   activeCourse: typeof courses.$inferSelect;
@@ -32,6 +33,16 @@ export const UserProgress = ({
 }: Props) => {
   const router = useRouter();
   const [countdown, setCountdown] = useState("");
+  const [animateHearts, setAnimateHearts] = useState(false);
+  const prevHeartsRef = useRef(hearts);
+
+  useEffect(() => {
+    if (hearts > prevHeartsRef.current) {
+        setAnimateHearts(true);
+        setTimeout(() => setAnimateHearts(false), 500);
+    }
+    prevHeartsRef.current = hearts;
+  }, [hearts]);
 
   useEffect(() => {
     if (hearts >= 5 || !lastHeartAt || hasActiveSubscription) {
@@ -85,7 +96,10 @@ export const UserProgress = ({
       </Link>
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="ghost" className="text-rose-500">
+          <Button variant="ghost" className={cn(
+            "text-rose-500",
+            animateHearts && "animate-heart-boost"
+          )}>
             <Image
               src="/heart.svg"
               height={22}
@@ -106,7 +120,7 @@ export const UserProgress = ({
               <Image src="/heart.svg" height={40} width={40} alt="Heart" />
               <div>
                 <p className="font-bold text-lg">
-                  {hearts >= 5 ? "Hearts are full!" : "Regenerating..."}
+                  {hearts >= 5 ? "Hearts are full!" : "Replenishing hearts"}
                 </p>
                 <p className="text-sm text-muted-foreground">
                   {hearts >= 5 

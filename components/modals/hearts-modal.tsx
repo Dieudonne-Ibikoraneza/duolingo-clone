@@ -69,7 +69,7 @@ export const HeartsModal = () => {
                         You&apos;re out of hearts!
                     </DialogTitle>
                     <DialogDescription className="text-center text-base">
-                        Get unlimited hearts to stay motivated.
+                        Get unlimited hearts to stay motivated, or wait for your next heart replenishment.
                         {countdown && (
                             <span className="block mt-2 font-bold text-rose-500">
                                 Next heart in: {countdown}

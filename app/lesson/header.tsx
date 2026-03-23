@@ -11,12 +11,14 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 type Props = {
   hearts: number;
   percentage: number;
   hasActiveSubscription: boolean;
   lastHeartAt: Date | null | undefined;
+  animateHearts?: boolean;
 };
 
 const REGENERATION_INTERVAL = 20 * 60 * 1000;
@@ -26,6 +28,7 @@ export const Header = ({
   percentage,
   hasActiveSubscription,
   lastHeartAt,
+  animateHearts,
 }: Props) => {
   const { open } = useExitModal();
   const router = useRouter();
@@ -65,7 +68,10 @@ export const Header = ({
       <Progress value={percentage} />
       <Popover>
         <PopoverTrigger asChild>
-          <div className="text-rose-500 flex items-center font-bold cursor-pointer hover:opacity-75 transition">
+          <div className={cn(
+            "text-rose-500 flex items-center font-bold cursor-pointer hover:opacity-75 transition",
+            animateHearts && "animate-heart-boost"
+          )}>
             <Image
               src="/heart.svg"
               alt="Heart"
@@ -86,7 +92,7 @@ export const Header = ({
               <Image src="/heart.svg" height={40} width={40} alt="Heart" />
               <div>
                 <p className="font-bold text-lg">
-                  {hearts >= 5 ? "Hearts are full!" : "Regenerating..."}
+                  {hearts >= 5 ? "Hearts are full!" : "Replenishing hearts"}
                 </p>
                 <p className="text-sm text-muted-foreground">
                   {hearts >= 5 

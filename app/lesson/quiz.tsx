@@ -14,7 +14,7 @@ type Props = {
 
 import { challengeOptions, challenges } from "@/db/schema";
 import { useHeartsModal } from "@/store/use-hearts-modal";
-import React, { useState, useTransition } from "react";
+import React, { useState, useTransition, useEffect } from "react";
 import { Header } from "./header";
 import { QuestionBubble } from "./question-bubble";
 import { Challenge } from "./challenge";
@@ -43,6 +43,15 @@ const Quiz = ({
     return uncompletedIndex === -1 ? 0 : uncompletedIndex;
   });
   const [status, setStatus] = useState<"correct" | "wrong" | "none">("none");
+  const [animateHearts, setAnimateHearts] = useState(false);
+
+  useEffect(() => {
+    if (initialHearts > hearts) {
+        setAnimateHearts(true);
+        setTimeout(() => setAnimateHearts(false), 500);
+    }
+    setHearts(initialHearts);
+  }, [initialHearts]);
 
   const [selectedOption, setSelectedOption] = useState<number>();
 
@@ -148,6 +157,7 @@ const Quiz = ({
         percentage={percentage}
         hasActiveSubscription={!!userSubscription?.isActive}
         lastHeartAt={lastHeartAt}
+        animateHearts={animateHearts}
       />
       <div className="flex-1">
         <div className="flex items-center h-full justify-center">
