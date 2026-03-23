@@ -23,6 +23,9 @@ import { upsertChallengeProgress } from "@/actions/challenge-progress";
 import { reduceHearts } from "@/actions/user-progress";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import NextImage from "next/image";
+import confetti from "canvas-confetti";
+import { ResultCard } from "./result-card";
 
 const Quiz = ({
   initialPercentage,
@@ -131,16 +134,53 @@ const Quiz = ({
   const challenge = challenges[activeIndex];
   const options = challenge?.challengeOptions || [];
 
+  useEffect(() => {
+    if (!challenge) {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
+    }
+  }, [challenge]);
+
   if (!challenge) {
     return (
       <>
-        <div className="flex flex-col gap-y-4 items-center justify-center h-full">
-          <h1 className="text-2xl font-bold">Lesson Complete!</h1>
-          <p className="text-muted-foreground">You completed all challenges.</p>
-          <Button onClick={() => (window.location.href = "/learn")}>
-            Finish
-          </Button>
+        <div className="flex flex-col gap-y-4 lg:gap-y-8 max-w-lg mx-auto text-center items-center justify-center h-full">
+            <NextImage
+                src="/mascot.svg"
+                alt="Finish"
+                className="hidden lg:block"
+                height={100}
+                width={100}
+            />
+            <NextImage
+                src="/mascot.svg"
+                alt="Finish"
+                className="block lg:hidden"
+                height={50}
+                width={50}
+            />
+            <h1 className="text-xl lg:text-3xl font-bold text-neutral-700">
+                Great job! <br /> You've completed the lesson.
+            </h1>
+            <div className="flex items-center gap-x-4 w-full">
+                <ResultCard
+                    variant="points"
+                    value={challenges.length * 10}
+                />
+                <ResultCard
+                    variant="hearts"
+                    value={hearts}
+                />
+            </div>
         </div>
+        <Footer
+            lessonId={initialLessonId}
+            status="completed"
+            onCheck={() => window.location.href = "/learn"}
+        />
       </>
     );
   }
