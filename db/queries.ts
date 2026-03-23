@@ -26,7 +26,7 @@ export const getUserProgress = cache(async () => {
 
   if (!data) return null;
 
-  // Heart regeneration logic
+  // Heart regeneration logic (Read-only calculation)
   if (data.hearts < 5 && data.lastHeartAt) {
     const twentyMinutes = 20 * 60 * 1000;
     const elapsed = Date.now() - new Date(data.lastHeartAt).getTime();
@@ -37,11 +37,6 @@ export const getUserProgress = cache(async () => {
       const newLastHeartAt = newHearts === 5 
         ? null 
         : new Date(new Date(data.lastHeartAt).getTime() + regeneratedHearts * twentyMinutes);
-
-      await db.update(userProgress).set({
-        hearts: newHearts,
-        lastHeartAt: newLastHeartAt,
-      }).where(eq(userProgress.userId, userId));
 
       return {
         ...data,
@@ -108,11 +103,9 @@ export const getCourses = cache(async () => {
 });
 
 export const getCourseById = cache(async (courseId: number) => {
-  const data = await db.query.courses.findFirst({
-    where: eq(courses.id, courseId),
-  });
+  const data = await db.select().from(courses).where(eq(courses.id, courseId)).limit(1);
 
-  return data;
+  return data[0];
 });
 
 export const getCourseProgress = cache(async () => {

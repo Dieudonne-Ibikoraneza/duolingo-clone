@@ -43,6 +43,31 @@ export const upsertChallengeProgress = async (challengeId: number) => {
     return { error: "hearts" };
   }
 
+  const now = new Date();
+  const lastLessonAt = currentUserProgress.lastLessonAt
+    ? new Date(currentUserProgress.lastLessonAt)
+    : null;
+
+  let newStreak = currentUserProgress.streak;
+
+  if (!lastLessonAt) {
+    newStreak = 1;
+  } else {
+    const isToday = lastLessonAt.toDateString() === now.toDateString();
+
+    const yesterday = new Date(now);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const isYesterday = lastLessonAt.toDateString() === yesterday.toDateString();
+
+    if (!isToday) {
+      if (isYesterday) {
+        newStreak += 1;
+      } else {
+        newStreak = 1;
+      }
+    }
+  }
+
   if (isPractice) {
     await db
       .update(challengeProgress)
@@ -61,6 +86,8 @@ export const upsertChallengeProgress = async (challengeId: number) => {
       .set({
         hearts: Math.min(currentUserProgress.hearts + 1, 5),
         points: currentUserProgress.points + 10,
+        streak: newStreak,
+        lastLessonAt: now,
       })
       .where(eq(userProgress.userId, userId));
 
@@ -68,6 +95,8 @@ export const upsertChallengeProgress = async (challengeId: number) => {
     revalidatePath("/lesson");
     revalidatePath(`/lesson/${lessonId}`);
     revalidatePath("/courses");
+    revalidatePath("/leaderboard");
+    revalidatePath("/quests");
     return;
   }
 
@@ -81,6 +110,8 @@ export const upsertChallengeProgress = async (challengeId: number) => {
     .update(userProgress)
     .set({
       points: currentUserProgress.points + 10,
+      streak: newStreak,
+      lastLessonAt: now,
     })
     .where(eq(userProgress.userId, userId));
 

@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { InfinityIcon } from "lucide-react";
+import { InfinityIcon, Flame } from "lucide-react";
 import { courses } from "@/db/schema";
 import {
   Popover,
@@ -18,6 +18,7 @@ type Props = {
   activeCourse: typeof courses.$inferSelect;
   hearts: number;
   points: number;
+  streak: number;
   hasActiveSubscription: boolean;
   lastHeartAt: Date | null | undefined;
 };
@@ -28,6 +29,7 @@ export const UserProgress = ({
   activeCourse,
   points,
   hearts,
+  streak,
   hasActiveSubscription,
   lastHeartAt,
 }: Props) => {
@@ -38,8 +40,8 @@ export const UserProgress = ({
 
   useEffect(() => {
     if (hearts > prevHeartsRef.current) {
-        setAnimateHearts(true);
-        setTimeout(() => setAnimateHearts(false), 500);
+      setAnimateHearts(true);
+      setTimeout(() => setAnimateHearts(false), 500);
     }
     prevHeartsRef.current = hearts;
   }, [hearts]);
@@ -51,7 +53,9 @@ export const UserProgress = ({
     }
 
     const interval = setInterval(() => {
-      const nextHeartAt = new Date(new Date(lastHeartAt).getTime() + REGENERATION_INTERVAL);
+      const nextHeartAt = new Date(
+        new Date(lastHeartAt).getTime() + REGENERATION_INTERVAL,
+      );
       const remaining = nextHeartAt.getTime() - Date.now();
 
       if (remaining <= 0) {
@@ -84,6 +88,12 @@ export const UserProgress = ({
       </Link>
       <Link href="/shop">
         <Button variant="ghost" className="text-orange-500">
+          <Flame className="h-5 w-5 mr-2 text-orange-500 stroke-[3]" />
+          {streak}
+        </Button>
+      </Link>
+      <Link href="/shop">
+        <Button variant="ghost" className="text-orange-500">
           <Image
             src="/points.svg"
             height={28}
@@ -96,10 +106,13 @@ export const UserProgress = ({
       </Link>
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="ghost" className={cn(
-            "text-rose-500",
-            animateHearts && "animate-heart-boost"
-          )}>
+          <Button
+            variant="ghost"
+            className={cn(
+              "text-rose-500",
+              animateHearts && "animate-heart-boost",
+            )}
+          >
             <Image
               src="/heart.svg"
               height={22}
@@ -123,10 +136,9 @@ export const UserProgress = ({
                   {hearts >= 5 ? "Hearts are full!" : "Replenishing hearts"}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {hearts >= 5 
+                  {hearts >= 5
                     ? "Keep up the great work! You have all your hearts."
-                    : `Next heart in ${countdown || "20:00"}`
-                  }
+                    : `Next heart in ${countdown || "20:00"}`}
                 </p>
               </div>
             </div>

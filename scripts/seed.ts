@@ -40,6 +40,30 @@ const main = async () => {
         description: "Intermediate phrases",
         order: 2,
       },
+      // French Units
+      {
+        id: 3,
+        courseId: 3, // French
+        title: "Unit 1",
+        description: "Learn the basics of French",
+        order: 1,
+      },
+      // Italian Units
+      {
+        id: 4,
+        courseId: 2, // Italian
+        title: "Unit 1",
+        description: "Learn the basics of Italian",
+        order: 1,
+      },
+      // Croatian Units
+      {
+        id: 5,
+        courseId: 4, // Croatian
+        title: "Unit 1",
+        description: "Learn the basics of Croatian",
+        order: 1,
+      },
     ]);
 
     await db.insert(schema.lessons).values([
@@ -50,6 +74,12 @@ const main = async () => {
       { id: 5, unitId: 1, title: "Prepositions", order: 5 },
       { id: 6, unitId: 2, title: "Greetings", order: 1 },
       { id: 7, unitId: 2, title: "Numbers", order: 2 },
+      // French Lessons
+      { id: 8, unitId: 3, title: "Basics", order: 1 },
+      // Italian Lessons
+      { id: 9, unitId: 4, title: "Basics", order: 1 },
+      // Croatian Lessons
+      { id: 10, unitId: 5, title: "Basics", order: 1 },
     ]);
 
     await db.insert(schema.challenges).values([
@@ -75,6 +105,21 @@ const main = async () => {
       // Lesson 7 - Numbers
       { id: 14, lessonId: 7, type: "SELECT", order: 1, question: 'Which one of these is "Uno"?' },
       { id: 15, lessonId: 7, type: "ASSIST", order: 2, question: "one, two, three" },
+
+      // French - Lesson 8 (Basics)
+      { id: 16, lessonId: 8, type: "SELECT", order: 1, question: 'Which one of these is "the man"?' },
+      { id: 17, lessonId: 8, type: "SELECT", order: 2, question: 'Which one of these is "the woman"?' },
+      { id: 18, lessonId: 8, type: "ASSIST", order: 3, question: "the boy" },
+
+      // Italian - Lesson 9 (Basics)
+      { id: 19, lessonId: 9, type: "SELECT", order: 1, question: 'Which one of these is "the man"?' },
+      { id: 20, lessonId: 9, type: "SELECT", order: 2, question: 'Which one of these is "the woman"?' },
+      { id: 21, lessonId: 9, type: "ASSIST", order: 3, question: "the boy" },
+
+      // Croatian - Lesson 10 (Basics)
+      { id: 22, lessonId: 10, type: "SELECT", order: 1, question: 'Which one of these is "the man"?' },
+      { id: 23, lessonId: 10, type: "SELECT", order: 2, question: 'Which one of these is "the woman"?' },
+      { id: 24, lessonId: 10, type: "ASSIST", order: 3, question: "the boy" },
     ]);
 
     await db.insert(schema.challengeOptions).values([
@@ -131,6 +176,45 @@ const main = async () => {
       // Challenge 15 (one, two, three)
       { id: 37, challengeId: 15, text: "Uno, Dos, Tres", correct: true, audioSrc: "/es_numbers_1.mp3" },
       { id: 38, challengeId: 15, text: "Cuatro, Cinco", correct: false, audioSrc: "/es_numbers_2.mp3" },
+
+      // French - Challenge 16 (the man)
+      { id: 39, challengeId: 16, imageSrc: "/man.png", text: "l'homme", correct: true, audioSrc: null },
+      { id: 40, challengeId: 16, imageSrc: "/woman.png", text: "la femme", correct: false, audioSrc: null },
+      { id: 41, challengeId: 16, imageSrc: "/robot.png", text: "le robot", correct: false, audioSrc: null },
+      // French - Challenge 17 (the woman)
+      { id: 42, challengeId: 17, imageSrc: "/woman.png", text: "la femme", correct: true, audioSrc: null },
+      { id: 43, challengeId: 17, imageSrc: "/man.png", text: "l'homme", correct: false, audioSrc: null },
+      { id: 44, challengeId: 17, imageSrc: "/robot.png", text: "le robot", correct: false, audioSrc: null },
+      // French - Challenge 18 (the boy)
+      { id: 45, challengeId: 18, text: "le garçon", correct: true, audioSrc: null },
+      { id: 46, challengeId: 18, text: "la fille", correct: false, audioSrc: null },
+      { id: 47, challengeId: 18, text: "le robot", correct: false, audioSrc: null },
+
+      // Italian - Challenge 19 (the man)
+      { id: 48, challengeId: 19, imageSrc: "/man.png", text: "l'uomo", correct: true, audioSrc: null },
+      { id: 49, challengeId: 19, imageSrc: "/woman.png", text: "la donna", correct: false, audioSrc: null },
+      { id: 50, challengeId: 19, imageSrc: "/robot.png", text: "il robot", correct: false, audioSrc: null },
+      // Italian - Challenge 20 (the woman)
+      { id: 51, challengeId: 20, imageSrc: "/woman.png", text: "la donna", correct: true, audioSrc: null },
+      { id: 52, challengeId: 20, imageSrc: "/man.png", text: "l'uomo", correct: false, audioSrc: null },
+      { id: 53, challengeId: 20, imageSrc: "/robot.png", text: "il robot", correct: false, audioSrc: null },
+      // Italian - Challenge 21 (the boy)
+      { id: 54, challengeId: 21, text: "il ragazzo", correct: true, audioSrc: null },
+      { id: 55, challengeId: 21, text: "la ragazza", correct: false, audioSrc: null },
+      { id: 56, challengeId: 21, text: "il robot", correct: false, audioSrc: null },
+
+      // Croatian - Challenge 22 (the man)
+      { id: 57, challengeId: 22, imageSrc: "/man.png", text: "muškarac", correct: true, audioSrc: null },
+      { id: 58, challengeId: 22, imageSrc: "/woman.png", text: "žena", correct: false, audioSrc: null },
+      { id: 59, challengeId: 22, imageSrc: "/robot.png", text: "robot", correct: false, audioSrc: null },
+      // Croatian - Challenge 23 (the woman)
+      { id: 60, challengeId: 23, imageSrc: "/woman.png", text: "žena", correct: true, audioSrc: null },
+      { id: 61, challengeId: 23, imageSrc: "/man.png", text: "muškarac", correct: false, audioSrc: null },
+      { id: 62, challengeId: 23, imageSrc: "/robot.png", text: "robot", correct: false, audioSrc: null },
+      // Croatian - Challenge 24 (the boy)
+      { id: 63, challengeId: 24, text: "dječak", correct: true, audioSrc: null },
+      { id: 64, challengeId: 24, text: "djevojčica", correct: false, audioSrc: null },
+      { id: 65, challengeId: 24, text: "robot", correct: false, audioSrc: null },
     ]);
 
     console.log("Seeding finished successfully!");
